@@ -20,7 +20,9 @@ din_sheet=1;           // thickness of the din-rail metal
 
 bottom_thick=3;       // Thickness of whole underside frame
 isolation_thick=0.4;  // Thickness of isolation bottom.
-spring_thick=2;
+
+spring_height=2;      // Needs to be < bottom_thick if with_spring_cover
+spring_thick=1.2;
 
 rest_shelf=5;         // The width of the area resting on the rail itself.
 hold_wide=25;         // The width of the top 'hook' holding on the rail.
@@ -127,8 +129,9 @@ module spring_latch() {
   hook(len=latch_wide, true);
 
   translate([rest_shelf, 0, 0]) spring_symmetric(len=din_dist - 2*rest_shelf,
-                                                 thick=1.2, wide=latch_wide,
-                                                 delta=5, height=spring_thick);
+                                                 thick=spring_thick,
+                                                 wide=latch_wide,
+                                                 delta=5, height=spring_height);
 }
 
 module dovetail(h=2, gap=slide_gap, len=20) {
