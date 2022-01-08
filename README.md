@@ -32,3 +32,7 @@ Relay mount             | Isolated Relay back         | Solenoid
 ![](img/relay-mount.jpg)|![](img/relay-mount-back.jpg)|![](img/solenoid-mount.jpg)
 
 ![](img/mounted.jpg)
+
+(c) h.zeller@acm.org, License **[CC-BY-SA]**
+
+[cc-by-sa]: https://creativecommons.org/licenses/by-sa/2.0/

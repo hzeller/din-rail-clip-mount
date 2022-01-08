@@ -1,4 +1,5 @@
 // -*- mode: scad; c-basic-offset: 2; indent-tabs-mode: nil; -*-
+// (c) h.zeller@acm.org License: CC-BY-SA
 e=0.01;
 
 with_frame=true;             // The mounting frame
