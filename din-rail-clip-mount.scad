@@ -6,22 +6,18 @@ with_frame=true;             // The mounting frame
 with_isolation=true;         // isolation layer in frame
 with_spring_cover=false;     // covering the spring with cover (needs bridging)
 with_whole_width_rest=true;  // rest on din-rail for whole length.
+lug_len=10;            // Length of the lug used pull down to remove from rail
 
 // Size of the hole-pattern for mounting.
 screw_along  = 67;
 screw_across = 44.5;
-lug_len=10;            // Length of the lug used pull down to remove from rail
-
 screw_bar=8;           // Width of the outer frame bar with screw holes
 screw_dia=3.5;
-
-din_wide=35;
-din_dist=din_wide - 0.5; // Slightly smaller for more clamping action.
-din_sheet=1;           // thickness of the din-rail metal
 
 bottom_thick=3;       // Thickness of whole underside frame
 isolation_thick=0.4;  // Thickness of isolation bottom.
 
+// These depend on the filament, needs experimentation for each filament.
 spring_height=2;      // Needs to be < bottom_thick if with_spring_cover
 spring_thick=1.2;
 
@@ -29,6 +25,11 @@ rest_shelf=5;         // The width of the area resting on the rail itself.
 hold_wide=25;         // The width of the top 'hook' holding on the rail.
 latch_wide=15;        // The width of the moveable clip at the bottom of rail.
 slide_gap=0.25;       // In-place printed gap for clip to move.
+
+// General sizing of the DIN rail. Essentially constants
+din_wide=35;
+din_dist=din_wide - 0.5; // Slightly smaller for more clamping action.
+din_sheet=1;           // thickness of the din-rail metal
 
 plate_x = screw_across + screw_bar;
 plate_y = hold_wide + 2;
@@ -127,7 +128,7 @@ module bottom_plate() {
 }
 
 module spring_latch() {
-  hook(len=latch_wide, true);
+  hook(len=latch_wide, do_slide=true);
 
   translate([rest_shelf, 0, 0]) spring_symmetric(len=din_dist - 2*rest_shelf,
                                                  thick=spring_thick,
@@ -191,14 +192,25 @@ module open_pull_lug(h=2) {
 
 
 // Hooks
-translate([din_dist, 0, 0]) scale([-1, 1, 1]) hook(len=hold_wide);  // hold hook
-spring_latch();  // latching hook
-
-// Place to mount PCB etc.
-difference() {
-  bottom_plate();
-  punch();
+module assembly_part_hooks() {
+  // retainer hook
+  translate([din_dist, 0, 0]) scale([-1, 1, 1]) hook(len=hold_wide);
+  spring_latch();  // latching hook
 }
 
-// Make simple to open.
-translate([-(plate_x - din_dist)/2, 0, 0]) open_pull_lug();
+module assembly_part_baseplate() {
+  // Place to mount PCB etc.
+  difference() {
+      bottom_plate();
+      punch();
+    }
+}
+
+module assembly_part_pull() {
+  // Make simple to open.
+  translate([-(plate_x - din_dist)/2, 0, 0]) open_pull_lug();
+}
+
+assembly_part_hooks();
+assembly_part_baseplate();
+assembly_part_pull();
